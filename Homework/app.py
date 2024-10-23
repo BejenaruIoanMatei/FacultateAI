@@ -1,6 +1,8 @@
 import pandas as pd
 import os
 import pprint as pp
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 races={
     "BEN": "Bengal",
@@ -124,4 +126,59 @@ def load_and_check_data():
         print(f"Exista {len(dupes)} intrari duplicate in dataset.")
     else:
         print("Nu exista duplicate in dataset.")
+
+def non_numeric_values():
+    def is_float(string):
+        try:
+            float(string)
+            return True
+        except ValueError:
+            return False
+
+    def is_integer(string):
+        return string.isdigit()
+    values = {}
+    unique_vals = number_of_unique_instances_file()  
+    for attr in unique_vals.keys():
+        for key in unique_vals[attr].keys():  
+            if not (is_float(str(key)) or is_integer(str(key))):
+                if attr not in values:
+                    values[attr] = []
+                values[attr].append(key)
+
+    return values
+
+def encode_non_numeric_values():
+    df = get_data()
+    non_numeric_vals = non_numeric_values()  
+
+    for attribute, values in non_numeric_vals.items():
+        mapping = {value: idx for idx, value in enumerate(set(values))}
+        
+        df[attribute] = df[attribute].replace(mapping)
+    
+    return df
+
+def plot_distributions(data):
+    sns.set(style="whitegrid")
+
+    numeric_cols = data.select_dtypes(include=['number']).columns
+    for col in numeric_cols:
+        plt.figure(figsize=(10, 6))
+        sns.histplot(data[col], bins=30, kde=True)
+        plt.title(f'Distributia pentru {col}')
+        plt.xlabel(col)
+        plt.ylabel('Frecventa')
+        plt.show()
+        
+        plt.figure(figsize=(10, 6))
+        sns.boxplot(x=data[col])
+        plt.title(f'Boxplot pentru {col}')
+        plt.xlabel(col)
+        plt.show()
+
+if __name__ == "__main__":
+    encoded_data = encode_non_numeric_values()  
+    print(encoded_data)  
+    plot_distributions(encoded_data) 
 
