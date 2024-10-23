@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from app import get_data
-data = get_data()
+from app import load_and_check_data 
+data = load_and_check_data()
 
 categorical_columns = ['Sexe', 'Race', 'Zone'] 
 data_encoded = pd.get_dummies(data, columns=categorical_columns)
