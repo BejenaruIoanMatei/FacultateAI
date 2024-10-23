@@ -150,6 +150,7 @@ def non_numeric_values():
 
 def encode_non_numeric_values():
     df = get_data()
+    print(df.isnull().sum())
     non_numeric_vals = non_numeric_values()  
 
     for attribute, values in non_numeric_vals.items():
@@ -157,6 +158,7 @@ def encode_non_numeric_values():
         
         df[attribute] = df[attribute].replace(mapping)
     
+    print(df.describe())
     return df
 
 def plot_distributions(data):
