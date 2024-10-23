@@ -23,3 +23,4 @@ def check_errors(file):
         print(f"The following entries: {dupes} have duplicates")
     else:
         print("There are no duplicates in the current dataset")
+
