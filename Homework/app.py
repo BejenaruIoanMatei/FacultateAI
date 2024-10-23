@@ -125,5 +125,3 @@ def load_and_check_data():
     else:
         print("Nu exista duplicate in dataset.")
 
-
-pp.pprint(number_of_unique_instances_file())
