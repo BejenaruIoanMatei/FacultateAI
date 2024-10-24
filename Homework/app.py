@@ -150,7 +150,7 @@ def non_numeric_values():
 
 def encode_non_numeric_values():
     df = get_data()
-    print(df.isnull().sum())
+    ##print(df.isnull().sum())
     non_numeric_vals = non_numeric_values()  
 
     for attribute, values in non_numeric_vals.items():
@@ -158,26 +158,37 @@ def encode_non_numeric_values():
         
         df[attribute] = df[attribute].replace(mapping)
     
-    print(df.describe())
+    ##print(df.describe())
     return df
 
 def plot_distributions(data):
     sns.set(style="whitegrid")
 
+    # Selectăm doar coloanele numerice, excluzând 'Row.names'
     numeric_cols = data.select_dtypes(include=['number']).columns
+    numeric_cols = [col for col in numeric_cols if col != 'Row.names']  # Excludem 'Row.names'
+
     for col in numeric_cols:
+        # histograma
         plt.figure(figsize=(10, 6))
         sns.histplot(data[col], bins=30, kde=True)
-        plt.title(f'Distributia pentru {col}')
+        plt.title(f'Distribuția pentru {col}')
         plt.xlabel(col)
-        plt.ylabel('Frecventa')
+        plt.ylabel('Frecvență')
         plt.show()
         
+        # boxplot
         plt.figure(figsize=(10, 6))
         sns.boxplot(x=data[col])
         plt.title(f'Boxplot pentru {col}')
         plt.xlabel(col)
         plt.show()
+
+if __name__ == "__main__":
+    encoded_data = encode_non_numeric_values()  
+    print(encoded_data)  
+    plot_distributions(encoded_data)
+
 
 if __name__ == "__main__":
     encoded_data = encode_non_numeric_values()  
