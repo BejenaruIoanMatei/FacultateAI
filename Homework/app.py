@@ -141,7 +141,7 @@ def non_numeric_values():
     def is_integer(string):
         return string.isdigit()
     values = {}
-    unique_vals = number_of_unique_instances_file()  
+    unique_vals = unique_instances_file()  
     for attr in unique_vals.keys():
         for key in unique_vals[attr].keys():  
             if not (is_float(str(key)) or is_integer(str(key))):
