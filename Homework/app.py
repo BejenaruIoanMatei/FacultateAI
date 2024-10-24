@@ -70,7 +70,7 @@ def get_attributes():
             col_arr.append(column)
     return col_arr
 
-def number_of_unique_instances_races():
+def unique_instances_races():
     unique_data = dict()
     file = get_data()
     col_arr = get_attributes()  
@@ -92,7 +92,7 @@ def number_of_unique_instances_races():
 
 
 
-def number_of_unique_instances_file():
+def unique_instances_file():
     unique_attr=dict()
     file=get_data()
     col_arr=get_attributes()
