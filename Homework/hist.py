@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from app import number_of_unique_instances_file
 
-def non_numeric_values():
+def non_numeric_values(string):
     def is_float(string):
         try:
             float(string)

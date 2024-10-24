@@ -36,6 +36,7 @@ def get_file(name, mode='r', content_to_write=None):
         elif 'w' in mode or 'a' in mode:
             file.write(str(content_to_write))
             return f"Content written to {filename}"
+        
 
 def number_of_instances():
     file=get_data()
@@ -127,6 +128,8 @@ def load_and_check_data():
     else:
         print("Nu exista duplicate in dataset.")
 
+
+
 def non_numeric_values():
     def is_float(string):
         try:
@@ -164,7 +167,7 @@ def encode_non_numeric_values():
 def plot_distributions(data):
     sns.set(style="whitegrid")
 
-    # Selectăm doar coloanele numerice, excluzând 'Row.names'
+
     numeric_cols = data.select_dtypes(include=['number']).columns
     numeric_cols = [col for col in numeric_cols if col != 'Row.names']  # Excludem 'Row.names'
 
@@ -184,13 +187,9 @@ def plot_distributions(data):
         plt.xlabel(col)
         plt.show()
 
-if __name__ == "__main__":
-    encoded_data = encode_non_numeric_values()  
-    print(encoded_data)  
-    plot_distributions(encoded_data)
-
 
 if __name__ == "__main__":
+    load_and_check_data()
     encoded_data = encode_non_numeric_values()  
     print(encoded_data)  
     plot_distributions(encoded_data) 

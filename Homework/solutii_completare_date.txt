@@ -1,4 +1,4 @@
 In urma intepretarii datelor anterioare, se observa o distributie neechilibrata a numarului de indivizi din fiecare clasa
 (rasa de pisici), unele clase au foarte multi indivizi si unele au foarte putini.
 Avand aceasta in vedere, propunem modificarea setului de date de antrenare cu valori noi sau stergerea unor valori deja
-existente dintre indivizii claselor suprapopulate pentru a avea o distributie mai uniforma intre clase. 
+existente dintre indivizii claselor suprapopulate pentru a avea o distributie mai uniforma intre clase.
