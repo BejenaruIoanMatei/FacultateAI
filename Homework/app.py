@@ -187,10 +187,21 @@ def plot_distributions(data):
         plt.xlabel(col)
         plt.show()
 
+def compute_numeric_correlations(data):
+    numeric_cols = data.select_dtypes(include=['number']).columns
+    correlation_matrix = data[numeric_cols].corr()
+    plt.figure(figsize=(12, 8))
+    sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt='.2f', linewidths=0.5)
+    plt.title('Matricea de corelație pentru variabile numerice')
+    plt.show()
+    return correlation_matrix
+
 
 if __name__ == "__main__":
     load_and_check_data()
-    encoded_data = encode_non_numeric_values()  
-    print(encoded_data)  
-    plot_distributions(encoded_data) 
+    print(compute_numeric_correlations(get_data()))
+    #encoded_data = encode_non_numeric_values()  
+   # print(encoded_data)  
+   # plot_distributions(encoded_data) 
+   
 
