@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 from nltk.corpus import wordnet as wn, words
 import random
 from random import choice
+from nltk.corpus import brown
 
 
 
@@ -22,7 +23,7 @@ nltk.download('wordnet')
 nltk.download('omw-1.4')
 nltk.download('punkt_tab')
 nltk.download('words')
-
+nltk.download('brown')
 
 def read_from_file(file_path):
     """ Cerinta 1: citeste un text dintr un fisier """
@@ -98,26 +99,34 @@ def plot_word_frequencies(word_frequency):
     plt.tight_layout()
     plt.show()
     
+brown_words = Counter([word.lower() for word in brown.words()])   
 common_words = set(words.words())
 
 def filter_common_words(candidates):
-    """Ca sa nu imi ia cuvinte ciudate(sper)"""
+    """Filtreaza cuvinte comune"""
     
     return [word for word in candidates if word in common_words and len(word) > 2 and word.isalpha()]
+
+def prioritize_words(candidates):
+    """Prioritizeaza cuvintele bazandu-se pe frecventa lor in corpusul Brown"""
+    
+    return sorted(candidates, key=lambda w: brown_words[w], reverse=True)
 
 def get_synonyms(word):
     synonyms = set()
     for syn in wn.synsets(word):
         for lemma in syn.lemmas():
             synonyms.add(lemma.name())
-    return filter_common_words(list(synonyms))
+    filtered_synonyms = filter_common_words(list(synonyms))
+    return prioritize_words(filtered_synonyms)
 
 def get_hypernyms(word):
     hypernyms = set()
     for syn in wn.synsets(word):
         for hypernym in syn.hypernyms():
             hypernyms.update(lemma.name() for lemma in hypernym.lemmas())
-    return filter_common_words(list(hypernyms))
+    filtered_hypernyms = filter_common_words(list(hypernyms))
+    return prioritize_words(filtered_hypernyms)
 
 def get_antonyms(word):
     antonyms = set()
@@ -125,13 +134,30 @@ def get_antonyms(word):
         for lemma in syn.lemmas():
             if lemma.antonyms():
                 antonyms.add(lemma.antonyms()[0].name())
-    return filter_common_words(list(antonyms))
+    filtered_antonyms = filter_common_words(list(antonyms))
+    return prioritize_words(filtered_antonyms)
+
+pronouns_and_others = {
+    "i", "me", "my", "mine", "myself",
+    "you", "your", "yours", "yourself", "yourselves",
+    "he", "him", "his", "himself",
+    "she", "her", "hers", "herself",
+    "it", "its", "itself",
+    "we", "us", "our", "ours", "ourselves",
+    "they", "them", "their", "theirs", "themselves",
+    "this", "that", "these", "those", "who", "whom", "whose", "which", "what",
+    "everyone", "someone", "no one", "nobody", "anyone", "anybody", "each",
+    "either", "neither", "none", "one", "a", "the","in","on","at","by","with"
+}
 
 def generate_alternatives(text):
     words = word_tokenize(text)
     new_text = []
     for word in words:
-        if random.random() < 0.2:
+        lower_word = word.lower()
+        if lower_word in pronouns_and_others:
+            new_text.append(word)
+        elif random.random() < 0.2:
             synonyms = get_synonyms(word)
             hypernyms = get_hypernyms(word)
             antonyms = get_antonyms(word)
