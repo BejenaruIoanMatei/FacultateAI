@@ -195,11 +195,22 @@ def compute_numeric_correlations(data):
     plt.title('Matricea de corelație pentru variabile numerice')
     plt.show()
     return correlation_matrix
+def transformed_race_counts():
+    file = get_data()
+    race_transformation = {race_code: 0 for race_code in races.keys()}
+    
+    for _, line in file.iterrows():
+        race_code = line['Race']
+        if race_code in race_transformation:
+            race_transformation[race_code] += 1
+    
+    transformed_counts = {races[code]: count for code, count in race_transformation.items() if count > 0}
+    return transformed_counts
 
 
 if __name__ == "__main__":
-    load_and_check_data()
-    print(compute_numeric_correlations(get_data()))
+    transformed=transformed_race_counts()
+    print(transformed)
     #encoded_data = encode_non_numeric_values()  
    # print(encoded_data)  
    # plot_distributions(encoded_data) 
